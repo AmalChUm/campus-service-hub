@@ -4,7 +4,7 @@ This public repository is the official starter code for the SWE 325 Campus Servi
 
 ## Assignment and links
 
-- [Complete assignment document](SWE325-Campus-Service-Hub-Git-Docker-CICD-Project.docx)
+- [Complete assignment document](SWE325-Campus-Service-Hub-Git-Docker-CICD-Project-Individual.docx)
 - [Issues](https://github.com/AmalChUm/campus-service-hub/issues)
 - [Actions](https://github.com/AmalChUm/campus-service-hub/actions)
 - [CI workflow](.github/workflows/ci.yml)
