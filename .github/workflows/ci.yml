@@ -1,0 +1,47 @@
+name: Campus Service CI
+
+on:
+  push:
+    branches-ignore: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: Run application tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Run tests
+        run: pytest -q
+
+  docker-smoke-test:
+    name: Build and run Docker image
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Build Docker image
+        run: docker build -t campus-service-hub:ci .
+      - name: Start container
+        run: docker run -d --name campus-service-ci -p 5000:5000 campus-service-hub:ci
+      - name: Wait for service
+        run: |
+          for attempt in {1..10}; do
+            curl --fail http://localhost:5000/health && exit 0
+            sleep 2
+          done
+          exit 1
+      - name: Test services endpoint
+        run: curl --fail http://localhost:5000/services
+      - name: Show container logs if needed
+        if: always()
+        run: docker logs campus-service-ci

@@ -1,0 +1,37 @@
+[
+  {
+    "id": "library",
+    "name": "University Library",
+    "category": "academic",
+    "location": "Main Campus",
+    "hours": "08:00-22:00"
+  },
+  {
+    "id": "advising",
+    "name": "Academic Advising",
+    "category": "academic",
+    "location": "Student Services Building",
+    "hours": "09:00-17:00"
+  },
+  {
+    "id": "tutoring",
+    "name": "Peer Tutoring Center",
+    "category": "academic",
+    "location": "Learning Commons",
+    "hours": "10:00-20:00"
+  },
+  {
+    "id": "health",
+    "name": "Campus Health Services",
+    "category": "health",
+    "location": "Wellness Center",
+    "hours": "08:00-17:00"
+  },
+  {
+    "id": "it-support",
+    "name": "Information Technology Support",
+    "category": "technical",
+    "location": "Technology Center",
+    "hours": "08:00-18:00"
+  }
+]
