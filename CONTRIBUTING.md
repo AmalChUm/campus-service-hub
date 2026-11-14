@@ -1,5 +1,7 @@
 # Individual contribution workflow
 
-Students work independently. Before coding, claim one issue, create a feature branch, and record the issue number in the branch and pull-request title. A contribution is complete only when the student has a meaningful commit, passing tests, a passing CI check, and a pull request with a clear explanation.
+Students work independently from their own fork. Choose one verified task from `TASK-CATALOG.md` and record the task ID in an issue in your fork, or in your report if Issues are disabled. No shared issue claiming or class-wide ownership comments are required.
 
-The CD workflow publishes images only from `main`. Do not edit the CD workflow to publish unreviewed feature-branch code.
+Create a focused feature branch named `feature/<task-id>-<short-description>`. Run the baseline tests, implement the acceptance criteria, add or update tests, and confirm that the branch contains a meaningful diff before opening a pull request.
+
+The CD workflow publishes images only from `main`. Do not edit the CD workflow to publish unreviewed feature-branch code. Student-owned GHCR publication is optional unless the course environment explicitly enables it.
