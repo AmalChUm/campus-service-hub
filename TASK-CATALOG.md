@@ -83,3 +83,11 @@ Create an issue in your own fork titled with the task ID, or record the selected
 4. Make a focused change; do not rewrite unrelated files.
 5. Before opening a PR, confirm that `git diff --stat main...HEAD` is non-empty and that the relevant tests or verification pass.
 6. If a task is already implemented in your fork, do not force a meaningless diff. Select another verified task or propose a new task with equivalent acceptance criteria.
+
+## Maizey experiment forms
+
+Complete the forms using the same participant code throughout the experiment:
+
+- [Pre-Task Survey](https://docs.google.com/forms/d/e/1FAIpQLSdWZImoDXORRwDT-dKlMaPAKnalw7vpyxzE-E6gk6fK0LzEVg/viewform) — complete before starting the task.
+- [Maizey Interaction Log](https://docs.google.com/forms/d/e/1FAIpQLSdHC2RZ9aZVcVenQJxNK8N-3euyvl9_cJYb7dP0P4ktlT_qOg/viewform) — submit one entry after each meaningful Maizey interaction; multiple submissions are expected.
+- [Post-Task Survey](https://docs.google.com/forms/d/e/1FAIpQLSc3Ii1uSbJlYU-8Qqxf2FvwHPakrL0X6U5ylPeY-VjbIVaNkg/viewform) — complete after finishing the task and evidence.
