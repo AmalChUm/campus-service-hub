@@ -48,4 +48,4 @@ def test_name_search(client):
 def test_service_count(client):
     response = client.get("/services/count")
     assert response.status_code == 200
-    assert response.get_json()["count"] == 5
+    assert response.get_json()["count"] == 6
