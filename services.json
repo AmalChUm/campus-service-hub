@@ -13,12 +13,19 @@
     "location": "Student Services Building",
     "hours": "09:00-17:00"
   },
-  {
+    {
     "id": "tutoring",
     "name": "Peer Tutoring Center",
     "category": "academic",
     "location": "Learning Commons",
     "hours": "10:00-20:00"
+  },
+  {
+    "id": "tutoring-01",
+    "name": "Learning Center",
+    "category": "learning-support",
+    "location": "Main Campus Room 525",
+    "hours": "Mon-Thu 9am-8pm, Fri 9am-3pm"
   },
   {
     "id": "health",
