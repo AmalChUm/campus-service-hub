@@ -20,8 +20,11 @@ jobs:
           python-version: '3.12'
       - name: Install dependencies
         run: pip install -r requirements.txt
+      - name: Check Python syntax
+        run: python -m compileall -q app.py tests
       - name: Run tests
         run: python -m pytest -q
+
 
   docker-smoke-test:
     name: Build and run Docker image
