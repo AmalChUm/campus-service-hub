@@ -41,6 +41,18 @@ def service_by_id(service_id):
     return jsonify(record)
 
 
+@app.get("/services/<service_id>/hours")
+def service_hours(service_id):
+    record = next((r for r in load_services() if r["id"] == service_id), None)
+    if record is None:
+        return jsonify({"error": "service not found", "id": service_id}), 404
+    return jsonify({
+        "id": record["id"],
+        "name": record["name"],
+        "hours": record["hours"],
+    })
+
+
 @app.get("/services/count")
 def service_count():
     return jsonify({"count": len(load_services())})

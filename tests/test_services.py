@@ -49,3 +49,24 @@ def test_service_count(client):
     response = client.get("/services/count")
     assert response.status_code == 200
     assert response.get_json()["count"] == 5
+
+
+def test_service_hours_for_existing_service(client):
+    response = client.get("/services/library/hours")
+
+    assert response.status_code == 200
+    assert response.get_json() == {
+        "id": "library",
+        "name": "University Library",
+        "hours": "08:00-22:00",
+    }
+
+
+def test_service_hours_for_unknown_service(client):
+    response = client.get("/services/definitely-not-a-service/hours")
+
+    assert response.status_code == 404
+    assert response.get_json() == {
+        "error": "service not found",
+        "id": "definitely-not-a-service",
+    }
