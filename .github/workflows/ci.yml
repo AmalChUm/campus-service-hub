@@ -23,6 +23,19 @@ jobs:
       - name: Run tests
         run: python -m pytest -q
 
+  quality:
+    name: Python syntax check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Check Python syntax
+        run: python -m compileall -q app.py tests
+
   docker-smoke-test:
     name: Build and run Docker image
     runs-on: ubuntu-latest
