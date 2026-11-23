@@ -33,6 +33,19 @@ def test_missing_service_is_not_found(client):
     assert response.get_json()["error"] == "service not found"
 
 
+def test_service_hours(client):
+    response = client.get("/services/library/hours")
+    assert response.status_code == 200
+    assert response.get_json()["name"] == "University Library"
+    assert "hours" in response.get_json()
+
+
+def test_missing_service_hours(client):
+    response = client.get("/services/does-not-exist/hours")
+    assert response.status_code == 404
+    assert response.get_json()["error"] == "service not found"
+
+
 def test_category_filter(client):
     response = client.get("/services?category=academic")
     assert response.status_code == 200
