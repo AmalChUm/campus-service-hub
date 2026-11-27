@@ -25,11 +25,25 @@ def services():
     records = load_services()
     category = request.args.get("category")
     search = request.args.get("search")
+    # Sort records based on the 'sort' query parameter
+    sort = request.args.get("sort")
+    if sort not in (None, "name", "-name"):
+        return jsonify({"error": "unsupported sort value"}), 400
+    if sort == "name":
+        records.sort(key=lambda r: r["name"].lower())
+    elif sort == "-name":
+        records.sort(key=lambda r: r["name"].lower(), reverse=True)
     if category:
         records = [r for r in records if r["category"].lower() == category.lower()]
     if search:
         query = search.lower()
         records = [r for r in records if query in r["id"].lower() or query in r["name"].lower()]
+    # Sort records after filtering based on the 'sort' query parameter
+    if sort == "name":
+        records.sort(key=lambda r: r["name"].lower())
+    elif sort == "-name":
+        records.sort(key=lambda r: r["name"].lower(), reverse=True)
+
     return jsonify(records)
 
 
