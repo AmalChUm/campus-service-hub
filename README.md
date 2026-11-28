@@ -1,4 +1,4 @@
-# Campus Service Hub — SWE 325 Individual Starter
+# Campus Service Hub - SWE 325 Individual Starter
 
 This public repository is the official starter code for the SWE 325 Campus Service Hub project. Every student completes the work individually in a fork. The repository includes a working baseline application, Docker configuration, and GitHub Actions examples so students can inspect, test, and extend a real delivery workflow.
 
@@ -36,6 +36,20 @@ python app.py
 ```
 
 Then visit `http://localhost:5000/health` and `http://localhost:5000/services`.
+
+## Filtering services
+
+`GET /services` accepts two optional filters, `category` and `search`. Matching is case-insensitive.
+
+- Leading and trailing whitespace is removed before a filter is used, so `?search=%20library%20` behaves like `?search=library`.
+- A missing, empty, or whitespace-only value means "no filter". The filter is ignored and all matching services are returned.
+- The maximum length of a filter value is **50 characters**, measured after whitespace is removed. A longer value returns HTTP 400 with a JSON `error` field.
+
+```bash
+curl "http://localhost:5000/services?category=academic"
+curl "http://localhost:5000/services?search=library"
+curl -i "http://localhost:5000/services?search=$(printf 'a%.0s' {1..51})"   # 400
+```
 
 ## Run with Docker
 

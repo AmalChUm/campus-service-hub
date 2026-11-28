@@ -12,7 +12,29 @@ def load_services():
         return json.load(handle)
 
 
+# Filter values (category and search) may be at most this many characters long,
+# measured after leading and trailing whitespace is removed.
+MAX_FILTER_LENGTH = 50
+
 app = Flask(__name__)
+
+
+def read_filter(name):
+    """Return a cleaned filter value, or None when the filter should be ignored.
+
+    - Leading and trailing whitespace is removed.
+    - A missing, empty, or whitespace-only value means "no filter" and is ignored.
+    - A cleaned value longer than MAX_FILTER_LENGTH raises ValueError.
+    """
+    value = request.args.get(name)
+    if value is None:
+        return None
+    value = value.strip()
+    if not value:
+        return None
+    if len(value) > MAX_FILTER_LENGTH:
+        raise ValueError(f"{name} must be at most {MAX_FILTER_LENGTH} characters")
+    return value
 
 
 @app.get("/health")
@@ -23,8 +45,11 @@ def health():
 @app.get("/services")
 def services():
     records = load_services()
-    category = request.args.get("category")
-    search = request.args.get("search")
+    try:
+        category = read_filter("category")
+        search = read_filter("search")
+    except ValueError as exc:
+        return jsonify({"error": str(exc)}), 400
     if category:
         records = [r for r in records if r["category"].lower() == category.lower()]
     if search:
