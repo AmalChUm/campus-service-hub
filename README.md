@@ -37,6 +37,186 @@ python app.py
 
 Then visit `http://localhost:5000/health` and `http://localhost:5000/services`.
 
+## API Examples
+
+All documented API endpoints use the HTTP GET method to retrieve information from the application.
+
+The Campus Service Hub provides REST API endpoints that return JSON responses. Start the application before running these commands in a separate terminal.
+
+The default port is 5000. If port 5000 is already in use on macOS, start the application with `PORT=5001 python app.py` and use port 5001 instead.
+
+### Health Check
+
+Check whether the application is running.
+
+```bash
+curl http://localhost:5000/health
+```
+
+Example response:
+
+```json
+{"status": "ok"}
+```
+
+### List All Services
+
+Retrieve all available campus services.
+
+```bash
+curl http://localhost:5000/services
+```
+
+Returns a JSON array containing all five campus services.
+
+Example response:
+
+```json
+[
+  {
+    "id": "library",
+    "name": "University Library",
+    "category": "academic",
+    "location": "Main Campus",
+    "hours": "08:00-22:00"
+  },
+  {
+    "id": "advising",
+    "name": "Academic Advising",
+    "category": "academic",
+    "location": "Student Services Building",
+    "hours": "09:00-17:00"
+  },
+  {
+    "id": "tutoring",
+    "name": "Peer Tutoring Center",
+    "category": "academic",
+    "location": "Learning Commons",
+    "hours": "10:00-20:00"
+  },
+  {
+    "id": "health",
+    "name": "Campus Health Services",
+    "category": "health",
+    "location": "Wellness Center",
+    "hours": "08:00-17:00"
+  },
+  {
+    "id": "it-support",
+    "name": "Information Technology Support",
+    "category": "technical",
+    "location": "Technology Center",
+    "hours": "08:00-18:00"
+  }
+]
+```
+
+### Service Count
+
+Retrieve the total number of services.
+
+```bash
+curl http://localhost:5000/services/count
+```
+
+Example response:
+
+```json
+{"count": 5}
+```
+
+### Find a Service by ID
+
+Retrieve information about a specific service.
+
+```bash
+curl http://localhost:5000/services/library
+```
+
+Example response:
+
+```json
+{
+  "id": "library",
+  "name": "University Library",
+  "category": "academic",
+  "location": "Main Campus",
+  "hours": "08:00-22:00"
+}
+```
+
+### Filter by Category
+
+```bash
+curl "http://localhost:5000/services?category=academic"
+```
+
+Returns the University Library, Academic Advising, and Peer Tutoring Center.
+
+Example response:
+
+```json
+[
+  {
+    "id": "library",
+    "name": "University Library",
+    "category": "academic",
+    "location": "Main Campus",
+    "hours": "08:00-22:00"
+  },
+  {
+    "id": "advising",
+    "name": "Academic Advising",
+    "category": "academic",
+    "location": "Student Services Building",
+    "hours": "09:00-17:00"
+  },
+  {
+    "id": "tutoring",
+    "name": "Peer Tutoring Center",
+    "category": "academic",
+    "location": "Learning Commons",
+    "hours": "10:00-20:00"
+  }
+]
+```
+
+### Search by Name or ID
+
+```bash
+curl "http://localhost:5000/services?search=library"
+```
+
+Returns a JSON array containing the University Library record.
+
+Example response:
+
+```json
+[
+  {
+    "id": "library",
+    "name": "University Library",
+    "category": "academic",
+    "location": "Main Campus",
+    "hours": "08:00-22:00"
+  }
+]
+```
+
+### Invalid Service ID
+
+```bash
+curl -i http://localhost:5000/services/invalid
+```
+
+Expected HTTP status: 404 Not Found.
+
+Example response:
+
+```json
+{"error": "service not found", "id": "invalid"}
+```
+
 ## Run with Docker
 
 ```bash
