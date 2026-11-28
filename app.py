@@ -12,6 +12,8 @@ def load_services():
         return json.load(handle)
 
 
+SORT_OPTIONS = {"name": False, "-name": True}  # sort value -> reverse order?
+
 app = Flask(__name__)
 
 
@@ -25,11 +27,16 @@ def services():
     records = load_services()
     category = request.args.get("category")
     search = request.args.get("search")
+    sort = request.args.get("sort")
+    if sort is not None and sort not in SORT_OPTIONS:
+        return jsonify({"error": "unsupported sort value", "allowed": sorted(SORT_OPTIONS)}), 400
     if category:
         records = [r for r in records if r["category"].lower() == category.lower()]
     if search:
         query = search.lower()
         records = [r for r in records if query in r["id"].lower() or query in r["name"].lower()]
+    if sort is not None:
+        records = sorted(records, key=lambda r: r["name"].lower(), reverse=SORT_OPTIONS[sort])
     return jsonify(records)
 
 
