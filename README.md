@@ -26,18 +26,44 @@ The repository’s Issues tab is optional. Do not wait for a shared issue or cla
 
 ## Run locally
 
-```bash
+Create a virtual environment, activate it, install the dependencies, run the tests, and start the app. Use the block for your operating system.
+
+**Windows PowerShell**
+
+```powershell
 python -m venv .venv
-# Windows PowerShell: .venv\\Scripts\\Activate.ps1
-# macOS/Linux: source .venv/bin/activate
+.venv\Scripts\Activate.ps1
 pip install -r requirements.txt
-pytest -q
+python -m pytest -q
 python app.py
 ```
 
-Then visit `http://localhost:5000/health` and `http://localhost:5000/services`.
+**macOS / Linux**
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+python -m pytest -q
+python app.py
+```
+
+When the environment is active, your prompt starts with `(.venv)`. If your computer does not recognize `python`, use `python3`.
+
+## API endpoints
+
+With the app running on port 5000 (locally or in Docker):
+
+| Endpoint | Description | Example |
+|---|---|---|
+| `GET /health` | Health check | `curl http://localhost:5000/health` returns `{"status": "ok"}` |
+| `GET /services` | List all services (optional `category` and `search` filters) | `curl http://localhost:5000/services` |
+| `GET /services/<service-id>` | One service, or a 404 JSON error | `curl http://localhost:5000/services/library` |
+| `GET /services/count` | Number of services | `curl http://localhost:5000/services/count` |
 
 ## Run with Docker
+
+On Windows, start **Docker Desktop** and wait until it reports that the engine is running before using `docker build` or `docker run`.
 
 ```bash
 docker build -t campus-service-hub:local .
@@ -46,12 +72,32 @@ docker run --rm --name campus-service -p 5000:5000 campus-service-hub:local
 
 In another terminal:
 
+macOS/Linux:
+
 ```bash
 curl --fail http://localhost:5000/health
 curl --fail http://localhost:5000/services
 ```
 
-If Windows reports an error such as `open //./pipe/dockerDesktopLinuxEngine: The system cannot find the file specified`, open Docker Desktop, wait for the engine to finish starting, and retry. The host port is the first `5000`; the container port is the second `5000`.
+Windows PowerShell (`curl` is an alias for another command there, so use `curl.exe`):
+
+```powershell
+curl.exe --fail http://localhost:5000/health
+curl.exe --fail http://localhost:5000/services
+```
+
+**Port mapping:** `-p HOST_PORT:CONTAINER_PORT`. In `-p 5000:5000`, the first `5000` is the port on your computer and the second `5000` is the port the app listens on inside the container. Press Ctrl+C in the first terminal to stop the container, or run `docker stop campus-service` from another terminal.
+
+## Troubleshooting
+
+| Symptom | Cause and remedy |
+|---|---|
+| `open //./pipe/dockerDesktopLinuxEngine: The system cannot find the file specified` | The Docker engine is not running. Open Docker Desktop, wait until it reports that the engine is running, then retry the command. |
+| `port is already allocated` or `address already in use` | Another program is using port 5000. Stop it, or map a different host port: `docker run --rm --name campus-service -p 5001:5000 campus-service-hub:local`, then check `http://localhost:5001/health` and `http://localhost:5001/services`. |
+| `curl: (7) Failed to connect` or `Connection refused` | The service is not running. Check `docker ps`, read the logs with `docker logs campus-service`, and make sure the URL uses the host port you mapped (`5000` for `-p 5000:5000`, `5001` for `-p 5001:5000`). |
+| `ModuleNotFoundError: No module named 'flask'` | The virtual environment is not active or the dependencies are not installed. Activate it (see "Run locally") and run `pip install -r requirements.txt`. |
+| PowerShell says `running scripts is disabled on this system` | For the current window only, run `Set-ExecutionPolicy -Scope Process -ExecutionPolicy RemoteSigned`, then run `.venv\Scripts\Activate.ps1` again. |
+| `python` is not recognized | Use `python3` instead, or reinstall Python and tick "Add Python to PATH". |
 
 ## Baseline delivery configuration
 
