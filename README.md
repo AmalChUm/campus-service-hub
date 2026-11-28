@@ -72,9 +72,18 @@ docker run --rm --name campus-service -p 5000:5000 campus-service-hub:local
 
 In another terminal:
 
+macOS/Linux:
+
 ```bash
 curl --fail http://localhost:5000/health
 curl --fail http://localhost:5000/services
+```
+
+Windows PowerShell (`curl` is an alias for another command there, so use `curl.exe`):
+
+```powershell
+curl.exe --fail http://localhost:5000/health
+curl.exe --fail http://localhost:5000/services
 ```
 
 **Port mapping:** `-p HOST_PORT:CONTAINER_PORT`. In `-p 5000:5000`, the first `5000` is the port on your computer and the second `5000` is the port the app listens on inside the container. Press Ctrl+C in the first terminal to stop the container, or run `docker stop campus-service` from another terminal.
@@ -84,8 +93,8 @@ curl --fail http://localhost:5000/services
 | Symptom | Cause and remedy |
 |---|---|
 | `open //./pipe/dockerDesktopLinuxEngine: The system cannot find the file specified` | The Docker engine is not running. Open Docker Desktop, wait until it reports that the engine is running, then retry the command. |
-| `port is already allocated` or `address already in use` | Another program is using port 5000. Stop it, or map a different host port: `docker run --rm -p 5001:5000 campus-service-hub:local`, then use `http://localhost:5001`. |
-| `curl: (7) Failed to connect` or `Connection refused` | The service is not running. Check `docker ps`, read the logs with `docker logs campus-service`, and make sure the port mapping is `-p 5000:5000`. |
+| `port is already allocated` or `address already in use` | Another program is using port 5000. Stop it, or map a different host port: `docker run --rm --name campus-service -p 5001:5000 campus-service-hub:local`, then check `http://localhost:5001/health` and `http://localhost:5001/services`. |
+| `curl: (7) Failed to connect` or `Connection refused` | The service is not running. Check `docker ps`, read the logs with `docker logs campus-service`, and make sure the URL uses the host port you mapped (`5000` for `-p 5000:5000`, `5001` for `-p 5001:5000`). |
 | `ModuleNotFoundError: No module named 'flask'` | The virtual environment is not active or the dependencies are not installed. Activate it (see "Run locally") and run `pip install -r requirements.txt`. |
 | PowerShell says `running scripts is disabled on this system` | For the current window only, run `Set-ExecutionPolicy -Scope Process -ExecutionPolicy RemoteSigned`, then run `.venv\Scripts\Activate.ps1` again. |
 | `python` is not recognized | Use `python3` instead, or reinstall Python and tick "Add Python to PATH". |
